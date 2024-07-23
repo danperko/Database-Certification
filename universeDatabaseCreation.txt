@@ -1,0 +1,101 @@
+-- Crear la tabla usuarios
+CREATE TABLE galaxy (
+    galaxy_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+	star_qty INT NOT NULL,
+	description TEXT,
+    distance_in_ly NUMERIC(4,1)
+);
+
+INSERT INTO galaxy(name, distance_in_ly, star_qty) VALUES('milkroad', 500.2, 2),
+('tiranliran', 754.7, 5),
+('dagoba', 997.5 ,7),
+('echo',234.9, 7),
+('alfatauri',67.9, 8),
+('gala', 56.0, 0);
+
+CREATE TABLE star (
+    star_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    planet_qty INT NOT NULL,
+	galaxy_id INT NOT NULL,
+	description TEXT,
+	FOREIGN KEY (galaxy_id) REFERENCES galaxy(galaxy_id)
+);
+
+
+INSERT INTO star(name, planet_qty, galaxy_id) VALUES('sun', 8,1),
+('zaphira', 4,2),
+('bim', 14,3),
+('corsa', 65,4),
+('astra', 87,5),
+('mokka', 8,6);
+
+
+CREATE TABLE planet(
+    planet_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    moon_qty INT NOT NULL,
+	star_id INT NOT NULL,
+	life_here BOOL,
+	description TEXT,
+	FOREIGN KEY (star_id) REFERENCES star(star_id)
+);
+
+INSERT INTO planet(name, moon_qty, star_id, life_here) VALUES('pepito', 8,1,TRUE),
+('jupiter', 2,1,FALSE),
+('julio', 1,2,FALSE),
+('pandea', 0,2,FALSE),
+('goleo', 5,3,FALSE),
+('hoth', 6,3,FALSE),
+('tatoin', 2,4,TRUE),
+('askar', 1,4,FALSE),
+('molnar', 1,5,FALSE),
+('junio', 1,5,FALSE),
+('agosto', 1,6,FALSE),
+('abril', 1,6,FALSE);
+
+CREATE TABLE moon (
+    moon_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+	planet_id INT NOT NULL,
+	description TEXT,
+	diameter_km INT,
+	FOREIGN KEY (planet_id) REFERENCES planet(planet_id)
+);
+
+INSERT INTO moon(name, planet_id) VALUES('a', 1),
+('b', 1),
+('c', 2),
+('d', 2),
+('e', 3),
+('f', 3),
+('g', 4),
+('h', 4),
+('i', 5),
+('j', 5),
+('k', 6),
+('l', 7),
+('m', 2),
+('n', 1),
+('o', 8),
+('p', 9),
+('q', 11),
+('r', 12),
+('s', 12),
+('t', 12);
+
+
+
+CREATE TABLE species (
+    species_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+	intelligent_life BOOLEAN,
+	planet_id INT NOT NULL,
+	description TEXT,
+	FOREIGN KEY (planet_id) REFERENCES planet(planet_id)
+);
+
+INSERT INTO species(name, intelligent_life, planet_id) VALUES('humans', TRUE, 1),
+('mongos',FALSE,7),
+('wookies', TRUE,12);
